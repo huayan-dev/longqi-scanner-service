@@ -19,8 +19,27 @@ type MysqlConfig struct {
 func (m MysqlConfig) GetDsn() string {
 	return fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		m.User, m.Pwd, m.Host, m.Port, m.DBName,
+		m.User, m.Pwd, m.Host, m.Port, "mysql",
 	)
+}
+func InitMysql(configPath string) (db *gorm.DB, err error) {
+	cnf, err := LoadFile(configPath)
+	if err != nil {
+		return nil, err
+	}
+	maps := cnf.Section("mysql")
+	mysqlCnf := MysqlConfig{
+		Port:   maps.Key("port").String(),
+		DBName: maps.Key("dbname").String(),
+		User:   maps.Key("user").String(),
+		Pwd:    maps.Key("pwd").String(),
+		Host:   maps.Key("host").String(),
+	}
+	db, err = gorm.Open(mysql.Open(mysqlCnf.GetDsn()))
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }
 
 func FirstInitMysql(configPath string) (db *gorm.DB, err error) {

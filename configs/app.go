@@ -7,11 +7,12 @@ import (
 var APP *AppConfigs
 
 type AppConfigs struct {
-	Mode    string
-	Host    string
-	Port    string
-	TcpHost string
-	TcpPort string
+	Mode          string
+	Host          string
+	Port          string
+	TcpHost       string
+	TcpPort       string
+	DeleteLogDays string
 }
 
 func LoadFile(configPath string) (cnf *ini.File, err error) {
@@ -28,11 +29,12 @@ func InitApp(configPath string) (cnf *AppConfigs, err error) {
 		return &AppConfigs{}, err
 	}
 	cnf = &AppConfigs{
-		Mode:    file.Section("app").Key("mode").String(),
-		Host:    file.Section("app").Key("host").String(),
-		Port:    file.Section("app").Key("port").String(),
-		TcpHost: file.Section("app").Key("tcphost").String(),
-		TcpPort: file.Section("app").Key("tcpport").String(),
+		Mode:          file.Section("app").Key("mode").String(),
+		Host:          file.Section("app").Key("host").String(),
+		Port:          file.Section("app").Key("port").String(),
+		TcpHost:       file.Section("app").Key("tcphost").String(),
+		TcpPort:       file.Section("app").Key("tcpport").String(),
+		DeleteLogDays: file.Section("ftp").Key("dellogdays").String(),
 	}
 	return cnf, nil
 }

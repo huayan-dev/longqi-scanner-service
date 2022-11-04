@@ -11,7 +11,7 @@ import (
 var configPath string
 
 func init() {
-	flag.StringVar(&configPath, "c", "../configs/config.ini", "config file path")
+	flag.StringVar(&configPath, "c", "../configs/test.ini", "config file path")
 	flag.Parse()
 	fileName := fmt.Sprintf("%v-%v-%v.log",
 		time.Now().Format("2006"),
